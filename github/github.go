@@ -50,6 +50,12 @@ const (
 	ModeWhitelist = "whitelist"
 	ModeBlacklist = "blacklist"
 	ModeBody      = "pr_body"
+
+	DefaultPRCommentMessage = "Automatically merged via Bulldozer!"
+
+	PRMessageMarker     = "==PR_MSG=="
+	SquashMessageMarker = "==SQUASH_MSG=="
+	CommitMessageMarker = "==COMMIT_MSG=="
 )
 
 var (
@@ -272,6 +278,22 @@ func (client *Client) CommitMessages(pr *github.PullRequest) ([]string, error) {
 	return commitMessages, nil
 }
 
+func (client *Client) PullRequestComment(pr *github.PullRequest) *github.IssueComment {
+	prCommentMessage := DefaultPRCommentMessage
+
+	if strings.Contains(pr.GetBody(), PRMessageMarker) {
+		r := regexp.MustCompile("(?s:(==PR_MSG==\r\n)(.*)(\r\n==PR_MSG==))")
+		m := r.FindStringSubmatch(pr.GetBody())
+		if len(m) == 4 {
+			prCommentMessage = m[2]
+		}
+	}
+
+	return &github.IssueComment{
+		Body: github.String(prCommentMessage),
+	}
+}
+
 func (client *Client) Merge(pr *github.PullRequest) error {
 	logger := client.Logger
 
@@ -279,25 +301,26 @@ func (client *Client) Merge(pr *github.PullRequest) error {
 	owner := repo.Owner.GetLogin()
 	name := repo.GetName()
 
-	commitMessage := ""
 	mergeMethod, err := client.MergeMethod(pr.Base)
 	if err != nil {
 		return errors.Wrapf(err, "cannot get merge method for %s on ref %s", repo.GetFullName(), pr.Base.GetRef())
 	}
 
+	var commitMessage string
+
 	if mergeMethod == SquashMethod {
 		messages, err := client.CommitMessages(pr)
 		if err != nil {
-			return err
+			return errors.Wrapf(err, "cannot get commit messages for pr %d", pr.GetNumber())
 		}
 		for _, message := range messages {
 			commitMessage = fmt.Sprintf("%s%s\n", commitMessage, message)
 		}
 
 		var r *regexp.Regexp
-		if strings.Contains(pr.GetBody(), "==COMMIT_MSG==") {
+		if strings.Contains(pr.GetBody(), CommitMessageMarker) {
 			r = regexp.MustCompile("(?s:(==COMMIT_MSG==\r\n)(.*)(\r\n==COMMIT_MSG==))")
-		} else if strings.Contains(pr.GetBody(), "==SQUASH_MSG==") {
+		} else if strings.Contains(pr.GetBody(), SquashMessageMarker) {
 			r = regexp.MustCompile("(?s:(==SQUASH_MSG==\r\n)(.*)(\r\n==SQUASH_MSG==))")
 		}
 		if r != nil {
@@ -308,7 +331,7 @@ func (client *Client) Merge(pr *github.PullRequest) error {
 		}
 	}
 
-	delete, err := client.DeleteFlag(pr.Base)
+	shouldDelete, err := client.DeleteFlag(pr.Base)
 	if err != nil {
 		return errors.Wrapf(err, "cannot get delete flag for %s on ref %s", repo.GetFullName(), pr.Base.GetRef())
 	}
@@ -330,7 +353,7 @@ func (client *Client) Merge(pr *github.PullRequest) error {
 	}).Info("Merged pull request")
 
 	if !pr.Head.Repo.GetFork() {
-		if delete {
+		if shouldDelete {
 			_, err = client.Git.DeleteRef(client.Ctx, owner, name, fmt.Sprintf("heads/%s", pr.Head.GetRef()))
 			if err != nil {
 				return errors.Wrapf(err, "cannot delete ref %s on %s", pr.Head.GetRef(), repo.GetFullName())
@@ -347,11 +370,9 @@ func (client *Client) Merge(pr *github.PullRequest) error {
 		}).Debug("Pull request is from a fork, not deleting if enabled")
 	}
 
-	_, _, err = client.Issues.CreateComment(client.Ctx, owner, name, pr.GetNumber(), &github.IssueComment{
-		Body: github.String("Automatically merged via Bulldozer!"),
-	})
-	if err != nil {
-		return errors.Wrapf(err, "cannot comment on %s-%d", repo.GetFullName(), pr.GetNumber())
+	prComment := client.PullRequestComment(pr)
+	if _, _, err := client.Issues.CreateComment(client.Ctx, owner, name, pr.GetNumber(), prComment); err != nil {
+		return errors.Wrapf(err, "cannot add comment on %s-%d", repo.GetFullName(), pr.GetNumber())
 	}
 
 	return nil

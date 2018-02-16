@@ -73,6 +73,13 @@ If the repository has branch protection active but does not require PRs to have 
 
 If the repository has branch protection active and enforces code reviews on PRs Bulldozer will wait until all status checks are green and at least one APPROVED review exists on the PR before merging it
 
+By default `bulldozer` posts a comment after the merge is done with a default message `Automatically merged via Bulldozer!`. This message can be overridden by specifying a block like the following in the PR body:
+```
+==PR_MSG==
+Hurray! Automatic merge!
+==PR_MSG==
+```
+
 ### Keeping PRs up to date with base branch
 Bulldozer also has the option to update PR branches if the target branch has been updated. If the PR has a GitHub label with the text `UPDATE ME` then Bulldozer will keep this PR up to date with the base branch.
 

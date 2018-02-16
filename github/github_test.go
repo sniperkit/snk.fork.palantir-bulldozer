@@ -673,3 +673,14 @@ func TestCommitMessage(t *testing.T) {
 		"* 1st commit msg", "* 2nd commit msg", "* 3rd commit msg",
 	}, commitMessages)
 }
+
+func TestPullRequestComment(t *testing.T) {
+	correctPRCommentMessage := "this is correct"
+	pr := fakePullRequest(1)
+
+	pr.Body = github.String(fmt.Sprintf("==PR_MSG==\r\n%s\r\n==PR_MSG==", correctPRCommentMessage))
+	assert.Equal(t, correctPRCommentMessage, client.PullRequestComment(pr).GetBody())
+
+	pr.Body = github.String("Random PR body")
+	assert.Equal(t, DefaultPRCommentMessage, client.PullRequestComment(pr).GetBody())
+}
