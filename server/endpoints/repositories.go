@@ -1,3 +1,8 @@
+/*
+Sniperkit-Bot
+- Status: analyzed
+*/
+
 // Copyright 2017 Palantir Technologies, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,9 +31,9 @@ import (
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 
-	gh "github.com/palantir/bulldozer/github"
-	"github.com/palantir/bulldozer/log"
-	"github.com/palantir/bulldozer/persist"
+	gh "github.com/sniperkit/snk.fork.palantir-bulldozer/github"
+	"github.com/sniperkit/snk.fork.palantir-bulldozer/log"
+	"github.com/sniperkit/snk.fork.palantir-bulldozer/persist"
 )
 
 type Repository struct {

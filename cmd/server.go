@@ -1,3 +1,8 @@
+/*
+Sniperkit-Bot
+- Status: analyzed
+*/
+
 // Copyright 2017 Palantir Technologies, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,9 +26,9 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	"github.com/palantir/bulldozer/auth"
-	"github.com/palantir/bulldozer/server"
-	"github.com/palantir/bulldozer/server/config"
+	"github.com/sniperkit/snk.fork.palantir-bulldozer/auth"
+	"github.com/sniperkit/snk.fork.palantir-bulldozer/server"
+	"github.com/sniperkit/snk.fork.palantir-bulldozer/server/config"
 )
 
 var serverCmd = &cobra.Command{

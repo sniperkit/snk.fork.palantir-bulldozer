@@ -1,3 +1,8 @@
+/*
+Sniperkit-Bot
+- Status: analyzed
+*/
+
 // Copyright 2017 Palantir Technologies, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,8 +27,8 @@ import (
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/palantir/bulldozer/persist"
-	"github.com/palantir/bulldozer/server/config"
+	"github.com/sniperkit/snk.fork.palantir-bulldozer/persist"
+	"github.com/sniperkit/snk.fork.palantir-bulldozer/server/config"
 )
 
 func InitDB(dbc *config.DatabaseConfig) (*sqlx.DB, error) {

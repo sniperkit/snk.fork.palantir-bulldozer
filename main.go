@@ -1,3 +1,8 @@
+/*
+Sniperkit-Bot
+- Status: analyzed
+*/
+
 // Copyright 2017 Palantir Technologies, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +22,7 @@ package main
 import (
 	log "github.com/sirupsen/logrus"
 
-	"github.com/palantir/bulldozer/cmd"
+	"github.com/sniperkit/snk.fork.palantir-bulldozer/cmd"
 )
 
 func main() {

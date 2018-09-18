@@ -1,3 +1,8 @@
+/*
+Sniperkit-Bot
+- Status: analyzed
+*/
+
 // Copyright 2017 Palantir Technologies, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,7 +52,7 @@ func setup() {
 		Ctx:    context.TODO(),
 		Client: github.NewClient(nil),
 
-		configPaths: []string{".bulldozer.yml", ".palantir/bulldozer.yml"},
+		configPaths: []string{".bulldozer.yml", ".sniperkit/snk.fork.palantir-bulldozer.yml"},
 	}
 
 	url, _ := url.Parse(server.URL + "/")
@@ -540,14 +545,14 @@ func TestConfigFileAlternatePathSuccess(t *testing.T) {
 	setup()
 	defer teardown()
 
-	mux.HandleFunc("/repos/o/r/contents/.palantir/bulldozer.yml", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/contents/.sniperkit/snk.fork.palantir-bulldozer.yml", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{
 		  "type": "file",
 		  "encoding": "base64",
 		  "content": "bW9kZTogd2hpdGVsaXN0CnN0cmF0ZWd5OiBzcXVhc2gKZGVsZXRlQWZ0ZXJNZXJnZTogdHJ1ZQp1cGRhdGVTdHJhdGVneTogbGFiZWwK",
-		  "name": ".palantir/bulldozer.yml",
-		  "path": ".palantir/bulldozer.yml"
+		  "name": ".sniperkit/snk.fork.palantir-bulldozer.yml",
+		  "path": ".sniperkit/snk.fork.palantir-bulldozer.yml"
 		}`)
 	})
 

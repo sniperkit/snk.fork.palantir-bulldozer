@@ -1,5 +1,8 @@
+# Sniperkit-Bot
+# - Status: analyzed
+
 darwin-linux-no-cgo: &darwin-linux-no-cgo
-  working_directory: /go/src/github.com/palantir/bulldozer
+  working_directory: /go/src/github.com/sniperkit/snk.fork.palantir-bulldozer
   docker:
     - image: nmiyake/go:go-darwin-linux-no-cgo-1.9-t112
       environment:
@@ -92,7 +95,7 @@ jobs:
             - ./client/node_modules
           key: v1-dependencies-{{ checksum "./client/package.json" }}
       - persist_to_workspace:
-          root: /go/src/github.com/palantir/bulldozer
+          root: /go/src/github.com/sniperkit/snk.fork.palantir-bulldozer
           paths:
             - client/build
       - *store-test-results
@@ -114,7 +117,7 @@ jobs:
       - setup_remote_docker
       - *install-docker-client
       - attach_workspace:
-          at: /go/src/github.com/palantir/bulldozer
+          at: /go/src/github.com/sniperkit/snk.fork.palantir-bulldozer
       - run: ./godelw dist
       - *build-docker-image
       - run: ./scripts/publish_docker.sh
@@ -128,7 +131,7 @@ jobs:
       - run: ./godelw publish bintray --url https://api.bintray.com --subject palantir --repository releases --user "$BINTRAY_USERNAME" --password "$BINTRAY_PASSWORD" --publish --downloads-list bulldozer
       - run: sha256sum dist/*.tgz
       - attach_workspace:
-          at: /go/src/github.com/palantir/bulldozer
+          at: /go/src/github.com/sniperkit/snk.fork.palantir-bulldozer
       - *build-docker-image
       - run: ./scripts/publish_docker.sh
 

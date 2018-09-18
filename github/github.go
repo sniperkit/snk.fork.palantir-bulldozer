@@ -1,3 +1,8 @@
+/*
+Sniperkit-Bot
+- Status: analyzed
+*/
+
 // Copyright 2017 Palantir Technologies, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,10 +35,10 @@ import (
 	"golang.org/x/oauth2"
 	"gopkg.in/yaml.v2"
 
-	"github.com/palantir/bulldozer/log"
-	"github.com/palantir/bulldozer/server/config"
-	"github.com/palantir/bulldozer/utils"
-	"github.com/palantir/bulldozer/version"
+	"github.com/sniperkit/snk.fork.palantir-bulldozer/log"
+	"github.com/sniperkit/snk.fork.palantir-bulldozer/server/config"
+	"github.com/sniperkit/snk.fork.palantir-bulldozer/utils"
+	"github.com/sniperkit/snk.fork.palantir-bulldozer/version"
 )
 
 const (
@@ -65,7 +70,7 @@ const (
 	// UpdateStrategyLabel the default value for UpdateStrategy
 	UpdateStrategyLabel UpdateStrategy = "label"
 
-	// Future feature, see https://github.com/palantir/bulldozer/issues/21
+	// Future feature, see https://github.com/sniperkit/snk.fork.palantir-bulldozer/issues/21
 	// UpdateStrategyOnRequiredChecksPassing UpdateStrategy = "onRequiredChecksPassing"
 
 	UpdateStrategyAlways UpdateStrategy = "always"

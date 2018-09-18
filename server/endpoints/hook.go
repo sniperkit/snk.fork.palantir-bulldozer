@@ -1,3 +1,8 @@
+/*
+Sniperkit-Bot
+- Status: analyzed
+*/
+
 // Copyright 2017 Palantir Technologies, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,10 +30,10 @@ import (
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 
-	gh "github.com/palantir/bulldozer/github"
-	"github.com/palantir/bulldozer/log"
-	"github.com/palantir/bulldozer/persist"
-	"github.com/palantir/bulldozer/server/config"
+	gh "github.com/sniperkit/snk.fork.palantir-bulldozer/github"
+	"github.com/sniperkit/snk.fork.palantir-bulldozer/log"
+	"github.com/sniperkit/snk.fork.palantir-bulldozer/persist"
+	"github.com/sniperkit/snk.fork.palantir-bulldozer/server/config"
 )
 
 func Hook(db *sqlx.DB, secret string, configPaths []string) echo.HandlerFunc {

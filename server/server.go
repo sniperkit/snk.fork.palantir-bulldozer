@@ -1,3 +1,8 @@
+/*
+Sniperkit-Bot
+- Status: analyzed
+*/
+
 // Copyright 2017 Palantir Technologies, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,11 +31,11 @@ import (
 	"github.com/labstack/echo/middleware"
 	"github.com/pkg/errors"
 
-	"github.com/palantir/bulldozer/auth"
-	bm "github.com/palantir/bulldozer/middleware"
-	"github.com/palantir/bulldozer/server/config"
-	"github.com/palantir/bulldozer/server/endpoints"
-	"github.com/palantir/bulldozer/utils"
+	"github.com/sniperkit/snk.fork.palantir-bulldozer/auth"
+	bm "github.com/sniperkit/snk.fork.palantir-bulldozer/middleware"
+	"github.com/sniperkit/snk.fork.palantir-bulldozer/server/config"
+	"github.com/sniperkit/snk.fork.palantir-bulldozer/server/endpoints"
+	"github.com/sniperkit/snk.fork.palantir-bulldozer/utils"
 )
 
 type Server struct {
